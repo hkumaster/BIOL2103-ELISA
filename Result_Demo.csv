@@ -1,0 +1,25 @@
+﻿Sample;First mix with;Second mix with;Third mix with;Result (+) or (-)
+A;X;N;V;-
+B;G;S;U;-
+C;D;P;I;++
+D;C;O;J;+
+E;M;H;I;-
+F;G;J;K;-
+G;B;F;M;-
+H;E;T;O;+/-
+I;J;E;C;+
+J;I;F;D;+
+K;N;Q;F;-
+L;W;R;V;-
+M;E;G;P;+
+N;A;K;X;-
+O;P;D;H;+
+P;O;C;M;+
+Q;V;K;X;+/-
+R;W;L;S;-
+S;T;B;R;-
+T;S;H;U;-
+U;B;T;W;-
+V;Q;A;L;-
+W;L;R;U;-
+X;A;N;Q;-
