@@ -1,4 +1,13 @@
-from graphviz import Digraph
+import webbrowser
+from time import sleep
+try:
+    from graphviz import Digraph
+except ModuleNotFoundError:
+    print("You havn't install graphviz module. Please download graphviz module and software first to generate the map.",\
+    "To install graphviz module, you can use command:",\
+    "pip install graphviz",sep = "\n")
+    exit()
+
 
 class Tube:
     def __init__(self, sample):
@@ -92,7 +101,6 @@ class Main:
             print("If you want to generate map of other samples, you can enter the capital letter code of the sample or you can enter any things to leave.\n")
             runSample = input("> ")
         print("Programme Exit Code 0")
-
 
 #ask user to input the file name of the csv file that include the ELISA result
     def getCsvName(self):
@@ -221,23 +229,35 @@ class Main:
         return route[:]
 
     def runMap(self, tubeCode, need_content = False, needsort = 0, filename = "route_map"):
-        rmap = Digraph("route", filename = filename)
-        route = self.runRoute(tubeCode)
-        vertices = dict()
-        for i in route:
-            front = i[0][0]
-            frontContent = i[0][1]
-            after = i[1][0]
-            afterContent = i[1][1]
-            if front == 'start':
-                continue
-            if front not in vertices:
-                vertices[front] = 1
-                rmap.node(front + str(vertices[front]), label = self.cell(front, frontContent, need_content, needsort = needsort))
-            vertices[after] = 1 if after not in vertices else vertices[after] + 1
-            rmap.node(after + str(vertices[after]), label = self.cell(after, afterContent, need_content, needsort = needsort))
-            rmap.edge(front + str(vertices[front]), after + str(vertices[after]))
-        rmap.view()
+        try:
+            rmap = Digraph("route", filename = filename)
+            route = self.runRoute(tubeCode)
+            vertices = dict()
+            for i in route:
+                front = i[0][0]
+                frontContent = i[0][1]
+                after = i[1][0]
+                afterContent = i[1][1]
+                if front == 'start':
+                    continue
+                if front not in vertices:
+                    vertices[front] = 1
+                    rmap.node(front + str(vertices[front]), label = self.cell(front, frontContent, need_content, needsort = needsort))
+                vertices[after] = 1 if after not in vertices else vertices[after] + 1
+                rmap.node(after + str(vertices[after]), label = self.cell(after, afterContent, need_content, needsort = needsort))
+                rmap.edge(front + str(vertices[front]), after + str(vertices[after]))
+            rmap.view()
+        except RuntimeError as e:
+            print("-" * 100)
+            print(f"Error message: {e}")
+            print("You can install Graphviz executables from \nhttps://graphviz.org/download/")
+            print("If this error still exist after you install Graphviz, please try to restart your PC first.")
+            try:
+                sleep(2)
+                webbrowser.open('https://graphviz.org/download/#windows')
+            except Exception:
+                pass
+            exit()
 
     def cell(self, tubeCode, contentString = '', need_content = False, needsort = 0):
         if not need_content:
